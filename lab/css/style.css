@@ -28,7 +28,52 @@ p.main {
 }
 
 .legend {
-  position: absolute;
-  background-color: #fff;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #ffffff;
   z-index: 2000;
+  height: 30%;
+  width: 20%;
+  border-radius: 5px;
+  padding-left: 15px;
+  padding-top: 15px;
+}
+
+
+.legend-boxes {
+  border-style: solid;
+  height: 20px;
+  width: 20px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.legend-text{
+  float: left;
+  margin-left: 30px;
+}
+
+#Mon {
+  background-color: #ffc25a;
+}
+
+
+#Tue {
+  background-color: #ffdfa8;
+}
+
+
+#Wed {
+  background-color: #ff9e46;
+}
+
+
+#Thu {
+  background-color: #e45f24;
+}
+
+
+#Fri {
+  background-color: #4aa3ca;
 }

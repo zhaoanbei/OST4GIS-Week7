@@ -36,6 +36,7 @@ var parseData = function(res) {
   var parsedRes = JSON.parse(res);
 
   // Store our (now parsed) data to the global variable `data`
+  // : _.chain(list).map(addone).map(addone).value()
   data = _.chain(parsedRes)
     .map(function(datum) {
 
@@ -119,7 +120,7 @@ var onStringFilterChange = function(e) {
   filterAndPlot();
 };
 
-var onSelectChange = function() {
+var onSelectChange = function(e) {
   selectValue = e.target.value;
   filterAndPlot();
 };

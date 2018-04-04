@@ -14,60 +14,15 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   ext: 'png'
 }).addTo(map);
 
+//var getData = $.ajax('')
+//var parseData = JSON.parse(getData)
+//L.geoJSON(parseData, {
+//    style: Polygon
+//}).addTo(map);
 
-/* =====================
 
-## Task 1
 
-Load the dataset into our application. Set the 'dataset' variable to the address for
-'philadelphia-garbage-collection-boundaries.geojson' in the class dataset repository
-https://raw.githubusercontent.com/CPLN-692-401/datasets/master/geojson/philadelphia-garbage-collection-boundaries.geojson
-
-You should now have GeoJSON data projected onto your map!
-
-## Task 2 - our first choropleth map
-
-Style each garbage collection area with a different color depending on what day
-of the week garbage collection occurs. For example, all areas with Monday
-garbage collection could be red, all areas with Tuesday garbage collection could
-be blue, etc.
-
-The myStyle function should return an object that contains style information.
-For example, if you add the following line inside of the myStyle function, every
-feature should be colored red.
-
-return {fillColor: 'red'}
-
-Other options for styling include opacity and weight. For a full list, see:
-http://leafletjs.com/reference.html#path
-
-For our myStyle function, we want a different fillColor to be returned depending
-on the day of the week. If you need help, review http://leafletjs.com/examples/geojson.html for
-working examples of this function.
-
-## Task 3
-
-You might have noticed that two of the features we are mapping have empty
-strings as their value for collection date. These will probably have the default
-style on your map, not the new styles you defined for the days of the week.
-
-Our map is better than that. Let's filter out the junk data.
-
-Check out the myFilter function. This function is used in a similar fashion to
-the second argument we provide to Underscore's _.filter() function. The filter
-loops through each feature in your GeoJSON file. For each feature, when the function
-returns true, that feature is added to the map. When it returns false, that feature
-is not added to the map.
-
-Currently, the myFilter function contains only:
-
-`return true;`
-
-Since it always returns true, it will add each feature to the map. Modify the
-code so it only adds features to the map if they have a collection day (not an
-empty string).
-
-## Task 4
+/*## Task 4
 
 Let's make something happen when a user clicks on a feature. Change the "Day of
 Week" in the sidebar to show the day of the week of garbage removal. Make sure
@@ -89,13 +44,6 @@ layer.on('click', function (e) {
 That part sets up a click event on each feature. Any code inside that second
 block of code will happen each time a feature is clicked.
 
-## Task 5
-
-Create a legend for the map. You do not need to use Javascript. You can use HTML
-and CSS to create legend boxes and give each a different color. Put a label next
-to each box. Position the legend on top of the map (hint: you can use absolute
-positioning, which is the technique used to position the sidebar and map on this
-page).
 
 ## Task 6 (Stretch goal)
 
@@ -125,12 +73,44 @@ of the application to report this information.
 
 ===================== */
 
-var dataset = ""
+var dataset = "https://raw.githubusercontent.com/CPLN-692-401/datasets/master/geojson/philadelphia-garbage-collection-boundaries.geojson"
 var featureGroup;
+function color(d){
+  return d === "MON" ? '#ffc25a' :
+  d === "TUE" ? '#ffdfa8' :
+  d === "WED" ? '#ff9e46' :
+  d === "THU" ? '#e45f24' :
+  '#4aa3ca' ;
+}
+
+function pop(d) {
+    return d === "MON"  ? 'Monday' :
+           d === "TUE"  ? 'Tuesday' :
+           d === "WED"  ? 'Wednesday' :
+           d === "THU"  ? 'Thursday' :
+           d === "FRI"  ? 'Friday' :
+                          'No Idea' ;
+}
 
 var myStyle = function(feature) {
-  return {};
-};
+  return {
+    fillColor: color(feature.properties.COLLDAY),
+    weight: 2,
+    opacity: 0.3,
+    color: 'white',
+    dashArray: '1',
+    fillOpacity: 0.7
+
+  }
+  /*if (feature.properties.COLLDAY == "MON") return {fillColor: 'red'}
+  else if (feature.properties.COLLDAY == "TUE") return {fillColor: 'yellow'}
+  else if (feature.properties.COLLDAY == "WED") return {fillColor: 'green'}
+  else if (feature.properties.COLLDAY == "THU") return {fillColor: 'orange'}
+  else if (feature.properties.COLLDAY == "FRI") return {fillColor: 'black'}
+  else if (feature.properties.COLLDAY == "SAT") return {fillColor: 'blue'}
+  else if (feature.properties.COLLDAY == "SUN") return {fillColor: 'white'}*/
+  }
+
 
 var showResults = function() {
   /* =====================
@@ -148,18 +128,24 @@ var showResults = function() {
 
 var eachFeatureFunction = function(layer) {
   layer.on('click', function (event) {
-    /* =====================
-    The following code will run every time a layer on the map is clicked.
-    Check out layer.feature to see some useful data about the layer that
-    you can use in your application.
-    ===================== */
+    /*switch (event.properties.COLLDAY) {
+        case 'MON': $("#day-of-week").text("Monday");
+        break;
+        case 'TUE': $("#day-of-week").text("Tuesday");
+        break;
+        case 'WED': $("#day-of-week").text("Wednesday");
+        break;
+        case 'THU': $("#day-of-week").text("Thursday");
+        break;
+        case 'FRI': $("#day-of-week").text("Friday");*/
     console.log(layer.feature);
+    $('.day-of-week').text(pop(features.properties.COLLDAY));
     showResults();
   });
 };
 
 var myFilter = function(feature) {
-  return true;
+  return feature.properties.COLLDAY!== " ";
 };
 
 $(document).ready(function() {
